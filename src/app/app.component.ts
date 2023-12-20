@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
+import { from } from 'rxjs';
 import {
   concatMap,
   mergeMap,
@@ -11,12 +12,16 @@ import {
 } from 'rxjs/operators';
 import 'rxjs/add/observable/from';
 
+
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  title(title: any) {
+    throw new Error('Method not implemented.');
+  }
   searchString: Subject<string> = new Subject();
   searchString$: Observable<string> = this.searchString.asObservable();
   search: string = '';
@@ -27,7 +32,7 @@ export class AppComponent implements OnInit {
   exhaustMap: Array<String> = [];
 
   startTime: number = 0;
-  updateSearch(value) {
+  updateSearch(value: string) {
     this.searchString.next(value);
     this.startTime = performance.now();
   }
@@ -36,7 +41,7 @@ export class AppComponent implements OnInit {
     this.searchString$
       .pipe(
         switchMap((x) =>
-          Observable.from(['1', '2', '3']).pipe(
+          from(['1', '2', '3']).pipe(
             delay(1000),
             map((y) => `appel: ${y}, param: ${x}`)
           )
@@ -52,7 +57,7 @@ export class AppComponent implements OnInit {
     this.searchString$
       .pipe(
         concatMap((x) =>
-          Observable.from(['1', '2', '3']).pipe(
+          from(['1', '2', '3']).pipe(
             delay(1000),
             map((y) => `appel: ${y}, param: ${x}`)
           )
@@ -68,7 +73,7 @@ export class AppComponent implements OnInit {
     this.searchString$
       .pipe(
         mergeMap((x) =>
-          Observable.from(['1', '2', '3']).pipe(
+          from(['1', '2', '3']).pipe(
             delay(1000),
             map((y) => `appel: ${y}, param: ${x}`)
           )
@@ -84,7 +89,7 @@ export class AppComponent implements OnInit {
     this.searchString$
       .pipe(
         exhaustMap((x) =>
-          Observable.from(['1', '2', '3']).pipe(
+          from(['1', '2', '3']).pipe(
             delay(1000),
             map((y) => `appel: ${y}, param: ${x}`)
           )
